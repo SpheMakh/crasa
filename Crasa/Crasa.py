@@ -77,7 +77,7 @@ class CasaTask(object):
             tmpfile.close()
             tmpfile = True
 
-        subprocess.check_call([self.casa, "--nogui",
+        subprocess.check_call([self.casa, "--nogui", "--agg",
                 "--nocrashreport", 
                 "--logfile", 
                 self.logfile, 
