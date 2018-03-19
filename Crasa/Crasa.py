@@ -37,8 +37,9 @@ class CasaTask(object):
                 if line.find("An error occurred running task {0:s}".format(self.task)):
                     abort = True
             if line.find("ABORTING")>=0:
-                    abort = True
-
+                abort = True
+            if line.find("*** Error ***")>=0:
+                abort = True
 
         return severe, abort
     
