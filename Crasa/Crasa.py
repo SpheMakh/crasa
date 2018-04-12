@@ -79,8 +79,8 @@ class CasaTask(object):
 
         subprocess.check_call([self.casa, "--nogui", "--agg",
                 "--nocrashreport", 
-                "--logfile",
                 "--log2term",
+                "--logfile",
                 self.logfile, 
                 "-c", tfile.name])
 
