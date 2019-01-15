@@ -2,6 +2,13 @@ import subprocess
 import sys
 import os
 import tempfile
+import pkg_resources
+
+
+try:
+    __version__ = pkg_resources.require("crasa")[0].version
+except pkg_resources.DistributionNotFound:
+    __version__ = "dev"
 
 
 class CasaException(Exception):
@@ -14,13 +21,17 @@ class CasaException(Exception):
 
 
 class CasaTask(object):
-    def __init__(self, task, casa="casa", crash_on_severe=False, logfile=None, **kwargs):
+    def __init__(self, task, casa="casa", 
+                 crash_on_severe=True, logfile=None, 
+                 ignore_leap_second_severe=True,
+                 **kwargs):
         """
         Instantiate Casa Task
         """
         self.casa = casa
         self.task = task
         self.kwargs = kwargs
+        self.ignore_leap_second_severe = ignore_leap_second_severe
         self.crash_on_severe = crash_on_severe
         self.logfile = logfile
 
@@ -36,6 +47,10 @@ class CasaTask(object):
                 severe = True
                 if line.find("An error occurred running task {0:s}".format(self.task))>=0:
                     abort = True
+                elif self.ignore_leap_second_severe and (line.find("Leap second table TAI_UTC seems out-of-date") > 0  or \
+                     line.find("Until the table is updated (see the CASA documentation or your system admin),") or \
+                     line.find("times and coordinates derived from UTC could be wrong by 1s or more.")):
+                     severe = False
             if line.find("ABORTING")>=0:
                 abort = True
             if line.find("*** Error ***")>=0:
