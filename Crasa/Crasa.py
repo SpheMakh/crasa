@@ -4,7 +4,6 @@ import os
 import tempfile
 import pkg_resources
 
-
 try:
     __version__ = pkg_resources.require("crasa")[0].version
 except pkg_resources.DistributionNotFound:
@@ -39,7 +38,8 @@ class CasaTask(object):
         """
         Reads a CASA logfile and reports if the task failed
         """
-        severe, abort = False, False
+        severe = False
+        abort = False
         with open(self.logfile, "r") as stdr:
             lines = stdr.readlines()
         for line in lines:
@@ -63,7 +63,6 @@ class CasaTask(object):
         """
         Run CASA task
         """
-        
         args = []
         for key, value in self.kwargs.iteritems():
             if isinstance(value, str):
