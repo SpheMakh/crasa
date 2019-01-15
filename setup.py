@@ -1,16 +1,12 @@
 #!/usr/bin/env python
 
 import os
-
-try:
-  from setuptools import setup
-except ImportError as e:
-  from distutils.core import setup
+from distutils.core import setup
 
 requirements = []
 
 PACKAGE_NAME = 'crasa'
-__version__ = '0.1.0'
+__version__ = '1.0.0'
 
 setup(name = PACKAGE_NAME,
     version = __version__,
