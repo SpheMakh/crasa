@@ -10,7 +10,7 @@ except ImportError as e:
 requirements = []
 
 PACKAGE_NAME = 'crasa'
-__version__ = '0.1.0'
+__version__ = '1.0.0'
 
 setup(name = PACKAGE_NAME,
     version = __version__,
