@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 
 import os
-
-try:
-  from setuptools import setup
-except ImportError as e:
-  from distutils.core import setup
+from distutils.core import setup
 
 requirements = []
 
