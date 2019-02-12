@@ -44,12 +44,13 @@ class CasaTask(object):
             lines = stdr.readlines()
         for line in lines:
             if line.find("SEVERE")>=0:
+                print line
                 severe = True
                 if line.find("An error occurred running task {0:s}".format(self.task))>=0:
                     abort = True
-                elif self.ignore_leap_second_severe and (line.find("Leap second table TAI_UTC seems out-of-date") > 0  or \
-                     line.find("Until the table is updated (see the CASA documentation or your system admin),") or \
-                     line.find("times and coordinates derived from UTC could be wrong by 1s or more.")):
+                elif self.ignore_leap_second_severe and (line.find("Leap second table TAI_UTC seems out-of-date") >= 0  or \
+                     line.find("Until the table is updated (see the CASA documentation or your system admin),") >= 0 or \
+                     line.find("times and coordinates derived from UTC could be wrong by 1s or more.") >= 0):
                      severe = False
             if line.find("ABORTING")>=0:
                 abort = True
@@ -104,7 +105,8 @@ class CasaTask(object):
 
         if tmpfile == True:
             os.system("rm -f {0:s}".format(self.logfile))
-            
+        
+        print self.crash_on_severe, severe
         if self.crash_on_severe and severe:
             raise CasaException("CASA raised a SEVERE exception while running task {0:s}".format(self.task))
         if abort:
