@@ -44,7 +44,6 @@ class CasaTask(object):
             lines = stdr.readlines()
         for line in lines:
             if line.find("SEVERE")>=0:
-                print line
                 severe = True
                 if line.find("An error occurred running task {0:s}".format(self.task))>=0:
                     abort = True
@@ -106,7 +105,6 @@ class CasaTask(object):
         if tmpfile == True:
             os.system("rm -f {0:s}".format(self.logfile))
         
-        print self.crash_on_severe, severe
         if self.crash_on_severe and severe:
             raise CasaException("CASA raised a SEVERE exception while running task {0:s}".format(self.task))
         if abort:
