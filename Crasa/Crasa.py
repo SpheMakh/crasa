@@ -58,6 +58,8 @@ class CasaTask(object):
 
         return severe, abort
     
+    def importlines(self, imports):
+        self.imports = imports
     
     def run(self):
         """
@@ -71,6 +73,7 @@ class CasaTask(object):
 
         args_line = ",".join(args)
         tfile = tempfile.NamedTemporaryFile(suffix=".py")
+        tfile.write("\n".join(self.imports))
         tfile.write("try:\n")
         tfile.write("  {0:s}({1:s})\n".format(self.task, args_line))
         tfile.write("except:\n")
