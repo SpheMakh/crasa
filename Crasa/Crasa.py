@@ -75,6 +75,8 @@ class CasaTask(object):
         tfile = tempfile.NamedTemporaryFile(suffix=".py")
         if hasattr(self, "imports"):
             tfile.write("\n".join(self.imports))
+
+        tfile.write("\n")
         tfile.write("try:\n")
         tfile.write("  {0:s}({1:s})\n".format(self.task, args_line))
         tfile.write("except:\n")
@@ -95,6 +97,7 @@ class CasaTask(object):
             tmpfile.close()
             tmpfile = True
 
+        os.system("cat {0:s} > script.py".format(tfile.name))
         subprocess.check_call([self.casa, "--nogui", "--agg",
                 "--nocrashreport", 
                 "--log2term",
