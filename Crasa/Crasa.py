@@ -97,7 +97,6 @@ class CasaTask(object):
             tmpfile.close()
             tmpfile = True
 
-        os.system("cat {0:s} > script.py".format(tfile.name))
         subprocess.check_call([self.casa, "--nogui", "--agg",
                 "--nocrashreport", 
                 "--log2term",
