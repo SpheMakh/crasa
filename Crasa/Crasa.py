@@ -66,7 +66,7 @@ class CasaTask(object):
         Run CASA task
         """
         args = []
-        for key, value in self.kwargs.iteritems():
+        for key, value in self.kwargs.items():
             if isinstance(value, str):
                 value = "'{0:s}'".format(value)
             args.append("{0:s}={1}".format(key, value))
