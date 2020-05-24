@@ -72,7 +72,7 @@ class CasaTask(object):
             args.append("{0:s}={1}".format(key, value))
 
         args_line = ",".join(args)
-        tfile = tempfile.NamedTemporaryFile(suffix=".py")
+        tfile = tempfile.NamedTemporaryFile(suffix=".py", mode="wt")
         if hasattr(self, "imports"):
             tfile.write("\n".join(self.imports))
 
