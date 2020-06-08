@@ -6,7 +6,7 @@ from distutils.core import setup
 requirements = []
 
 PACKAGE_NAME = 'crasa'
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 setup(name = PACKAGE_NAME,
     version = __version__,
