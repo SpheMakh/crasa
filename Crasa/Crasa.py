@@ -3,6 +3,7 @@ import sys
 import os
 import tempfile
 import pkg_resources
+import pickle
 
 try:
     __version__ = pkg_resources.require("crasa")[0].version
@@ -77,19 +78,18 @@ class CasaTask(object):
         if hasattr(self, "imports"):
             tfile.write("\n".join(self.imports))
 
-        tfile.write( "import codecs\nimport json\n")
+        tfile.write( "import pickle\n")
         tfile.write( "try:\n")
-        tfile.write( "  result = {0:s}({1:s})\n".format(self.task, args_line))
+        tfile.write( "    result = {0:s}({1:s})\n".format(self.task, args_line))
         tfile.write( "except:\n")
-        tfile.write( "  with open(casa['files']['logfile'], 'a') as stda:\n")
-        tfile.write( "    stda.write('ABORTING:: Caught CASA exception ')\n")
-        tfile.write( "    result = None\n")
+        tfile.write( "    with open(casa['files']['logfile'], 'a') as stda:\n")
+        tfile.write( "        stda.write('ABORTING:: Caught CASA exception ')\n")
+        tfile.write( "        result = None\n")
         tfile.write(f"if result and {self.save_result is not None}:\n")
         tfile.write( "    if not isinstance(result, dict):\n")
         tfile.write( "        result = {'result' : result}\n")
-        tfile.write(f"    with codecs.open('{self.save_result}', 'w', 'utf8') as stdw:\n")
-        tfile.write( "        a = json.dumps(result, ensure_ascii=False)\n")
-        tfile.write( "        stdw.write(a)\n" )
+        tfile.write(f"    with open('{self.save_result}', 'wb') as stdw:\n")
+        tfile.write( "        pickle.dump(result, stdw)\n")
         tfile.write( "exit()")
         tfile.flush()
 
