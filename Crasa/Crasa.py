@@ -22,7 +22,7 @@ class CasaException(Exception):
 class CasaTask(object):
     def __init__(self, task, casa="casa", 
                  crash_on_severe=True, logfile=None, 
-                 ignore_leap_second_severe=True,
+                 ignore_leap_second_severe=True, save_result=None,
                  **kwargs):
         """
         Instantiate Casa Task
@@ -33,6 +33,7 @@ class CasaTask(object):
         self.ignore_leap_second_severe = ignore_leap_second_severe
         self.crash_on_severe = crash_on_severe
         self.logfile = logfile
+        self.save_result = save_result
 
     def __exit_status(self):
         """
@@ -76,14 +77,20 @@ class CasaTask(object):
         if hasattr(self, "imports"):
             tfile.write("\n".join(self.imports))
 
-        tfile.write("\n")
-        tfile.write("try:\n")
-        tfile.write("  {0:s}({1:s})\n".format(self.task, args_line))
-        tfile.write("except:\n")
-        tfile.write("  with open(casa[\"files\"][\"logfile\"], \"a\") as stda:\n")
-        tfile.write("    stda.write(\"ABORTING:: Caught CASA exception \")\n")
-        tfile.write("finally:\n")
-        tfile.write("  exit()")
+        tfile.write( "import codecs\nimport json\n")
+        tfile.write( "try:\n")
+        tfile.write( "  result = {0:s}({1:s})\n".format(self.task, args_line))
+        tfile.write( "except:\n")
+        tfile.write( "  with open(casa['files']['logfile'], 'a') as stda:\n")
+        tfile.write( "    stda.write('ABORTING:: Caught CASA exception ')\n")
+        tfile.write( "    result = None\n")
+        tfile.write(f"if result and {self.save_result is not None}:\n")
+        tfile.write( "    if not isinstance(result, dict):\n")
+        tfile.write( "        result = {'result' : result}\n")
+        tfile.write(f"    with codecs.open('{self.save_result}', 'w', 'utf8') as stdw:\n")
+        tfile.write( "        a = json.dumps(result, ensure_ascii=False)\n")
+        tfile.write( "        stdw.write(a)\n" )
+        tfile.write( "exit()")
         tfile.flush()
 
         tmpfile = False
