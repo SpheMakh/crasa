@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
 import os
-from distutils.core import setup
+from setuptools import setup
 
 requirements = []
 
 PACKAGE_NAME = 'crasa'
-__version__ = '1.2.3'
+__version__ = '1.2.4'
 
 setup(name = PACKAGE_NAME,
     version = __version__,
