@@ -17,7 +17,6 @@ setup(name = PACKAGE_NAME,
     packages=["Crasa"], 
     install_requires = requirements,
     include_package_data = True,
-    license=["GNU GPL v2"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Science/Research",
